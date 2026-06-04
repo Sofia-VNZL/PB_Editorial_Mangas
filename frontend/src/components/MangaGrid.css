@@ -1,0 +1,33 @@
+.section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: #111;
+    padding: 1rem 1.5rem 0.5rem;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 16px;
+    padding: 0 1.5rem;
+}
+
+.skeleton {
+    background: #e0e0e0;
+    border-radius: 12px;
+    aspect-ratio: 2/3;
+    animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #888;
+    font-size: 14px;
+}
