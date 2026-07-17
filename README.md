@@ -1,8 +1,10 @@
 Editorial de Mangás
+
 Aplicação web para gestão de uma editorial de mangás, desenvolvida como projeto integrado
 da disciplina de Engenharia de Softwares Escaláveis no Instituto Infnet.
 
 Sobre o projeto
+
 O sistema permite gerir autores e obras de mangá, incluindo controlo de status de
 publicação e histórico de alterações. A aplicação foi construída seguindo os princípios
 do Domain-Driven Design (DDD) com arquitectura em camadas e uma interface React que
@@ -11,16 +13,19 @@ consome a API REST directamente.
 Funcionalidades
 
 *Autores*
+
 - Cadastro, listagem, edição e remoção de autores
 - Busca por nome
 
 *Mangás*
+
 - Cadastro, listagem, edição e remoção de obras
 - Filtro por género, status e autor
 - Atualização isolada de status de publicação
 - Histórico de mudanças de status com timestamp
 
 *Interface*
+
 - Catálogo visual com cards por obra
 - Navegação entre secções sem mudança de URL
 - Formulários modais para cadastro e edição
@@ -53,6 +58,7 @@ Endpoints principais
 
 
 Como executar
+
 *Backend*
 1. Abre o projeto no IntelliJ
 2. Corre `Tp1EditorialMangasSofiaCastroApplication.java`
