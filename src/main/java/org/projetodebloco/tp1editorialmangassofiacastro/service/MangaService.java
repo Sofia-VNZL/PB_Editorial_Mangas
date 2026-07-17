@@ -16,8 +16,10 @@ import java.util.List;
 public class MangaService {
     private final MangaRepository mangaRepository;
     private final AutorRepository autorRepository;
+    private final MangaStatusHistoricoService historicoService;
 
     public List<Manga> listarTodos() {
+
         return mangaRepository.findAll();
     }
 
@@ -45,18 +47,34 @@ public class MangaService {
         manga.setTitulo(dadosNovos.getTitulo());
         manga.setSinopse(dadosNovos.getSinopse());
         manga.setGenero(dadosNovos.getGenero());
+        if (dadosNovos.getStatus() != null && !dadosNovos.getStatus().equals(manga.getStatus())) {
+            MangaStatus statusAnterior = manga.getStatus();
+            manga.setStatus(dadosNovos.getStatus());
+            mangaRepository.save(manga);
+            historicoService.registrar(manga, statusAnterior);
+            return manga;
+        }
+
         manga.setStatus(dadosNovos.getStatus());
+
         if (dadosNovos.getAutor() != null && dadosNovos.getAutor().getId() != null) {
             manga.setAutor(autorRepository.findById(dadosNovos.getAutor().getId())
-                    .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado!!!")));
+                    .orElseThrow(() -> new EntityNotFoundException("Autor não encontrado")));
         }
         return mangaRepository.save(manga);
     }
 
     public Manga atualizarStatus(Long id, MangaStatus novoStatus) {
         Manga manga = buscarPorId(id);
-        manga.setStatus(novoStatus);
-        return mangaRepository.save(manga);
+        MangaStatus statusAnterior = manga.getStatus();
+
+        if (!statusAnterior.equals(novoStatus)) {
+            manga.setStatus(novoStatus);
+            mangaRepository.save(manga);
+            historicoService.registrar(manga, statusAnterior);
+        }
+
+        return manga;
     }
 
     public void deletar(Long id) {
