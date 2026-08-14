@@ -1,0 +1,123 @@
+
+.aval-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.aval-modal {
+    background: #fff;
+    border-radius: 12px;
+    padding: 1.5rem;
+    width: 360px;
+    max-width: 95vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aval-close {
+    position: absolute;
+    top: 12px; right: 14px;
+    background: none; border: none;
+    font-size: 20px; cursor: pointer; color: #888;
+}
+
+.aval-titulo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 1px;
+    color: #111;
+    margin-bottom: 0;
+}
+
+.aval-autor {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.aval-media {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff8e1;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+.aval-estrelas-media {
+    font-size: 20px;
+    color: #f59e0b;
+    letter-spacing: 2px;
+}
+
+.aval-numero {
+    font-size: 13px;
+    color: #555;
+    font-weight: 700;
+}
+
+.aval-divider {
+    height: 1px;
+    background: #eee;
+    margin: 6px 0;
+}
+
+.aval-label {
+    font-size: 13px;
+    font-weight: 700;
+    color: #333;
+}
+
+.aval-estrelas {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 4px;
+}
+
+.aval-estrela {
+    font-size: 36px;
+    color: #ddd;
+    cursor: pointer;
+    transition: color 0.1s, transform 0.1s;
+    line-height: 1;
+}
+
+.aval-estrela.ativa {
+    color: #f59e0b;
+}
+
+.aval-estrela:hover {
+    transform: scale(1.15);
+}
+
+.aval-mensagem {
+    font-size: 12px;
+    color: #2d6a4f;
+    background: #e8f5e9;
+    padding: 8px 10px;
+    border-radius: 6px;
+}
+
+.aval-btn {
+    margin-top: 6px;
+    padding: 10px;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.aval-btn:hover { background: #c1121f; }
+.aval-btn:disabled { background: #ccc; cursor: not-allowed; }

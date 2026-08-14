@@ -7,6 +7,7 @@ import Modal from "./components/Modal";
 import FormModal from "./components/FormModal";
 import AutorFormModal from "./components/AutorFormModal";
 import "./App.css";
+import AvaliacaoModal from "./components/AvaliacaoModal";
 
 const API = "http://localhost:8080/api";
 
@@ -24,6 +25,7 @@ export default function App() {
   const [detalhe, setDetalhe] = useState(null);
   const [formManga, setFormManga] = useState(null);
   const [formAutor, setFormAutor] = useState(null);
+  const [avaliar, setAvaliar] = useState(null);
 
   async function loadMangas(params = {}) {
     setLoading(true);
@@ -86,6 +88,7 @@ export default function App() {
                   onSelect={setDetalhe}
                   onEditar={(m) => setFormManga(m)}
                   onDeletar={deletarManga}
+                  onAvaliar={setAvaliar}
               />
             </>
         )}
@@ -112,6 +115,8 @@ export default function App() {
             onClose={() => setFormAutor(null)}
             onSaved={() => { setFormAutor(null); loadAutores(); }}
         />
+
+        <AvaliacaoModal manga={avaliar} onClose={() => setAvaliar(null)} />
       </div>
   );
 }

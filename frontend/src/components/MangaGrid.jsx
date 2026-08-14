@@ -1,7 +1,7 @@
 import MangaCard from "./MangaCard";
 import "./MangaGrid.css";
 
-export default function MangaGrid({ mangas, loading, online, onSelect, onEditar, onDeletar }) {
+export default function MangaGrid({ mangas, loading, online, onSelect, onEditar, onDeletar, onAvaliar }) {
     return (
         <div>
             <div className="section-title">Catálogo de obras ({mangas.length})</div>
@@ -17,7 +17,7 @@ export default function MangaGrid({ mangas, loading, online, onSelect, onEditar,
                 <div className="grid">
                     {mangas.map(m => (
                         <MangaCard key={m.id} manga={m}
-                                   onClick={onSelect} onEditar={onEditar} onDeletar={onDeletar} />
+                                   onClick={onSelect} onEditar={onEditar} onDeletar={onDeletar} onAvaliar={onAvaliar}/>
                     ))}
                 </div>
             )}

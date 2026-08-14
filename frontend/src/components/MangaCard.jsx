@@ -32,7 +32,7 @@ export function StatusBadge({ status }) {
     return <span className={`status-badge ${cls}`}>{labels[status] || status}</span>;
 }
 
-export default function MangaCard({ manga, onClick, onEditar, onDeletar }) {
+export default function MangaCard({ manga, onClick, onEditar, onDeletar, onAvaliar }) {
     const [c1, c2] = coverColor(manga.id || 1);
     const autorNome = manga.autor?.nome || "Autor desconhecido";
     const titulo = manga.titulo?.length > 18
@@ -55,6 +55,7 @@ export default function MangaCard({ manga, onClick, onEditar, onDeletar }) {
                 <div className="card-actions">
                     <button className="btn-edit" onClick={() => onEditar(manga)}>Editar</button>
                     <button className="btn-delete" onClick={() => onDeletar(manga.id)}>Deletar</button>
+                    <button className="btn-avaliar" onClick={() => onAvaliar(manga)}>Avaliar</button>
                 </div>
             </div>
         </div>

@@ -8,7 +8,7 @@ import org.projetodebloco.tp1editorialmangassofiacastro.model.Genero;
 import org.projetodebloco.tp1editorialmangassofiacastro.model.Manga;
 import org.projetodebloco.tp1editorialmangassofiacastro.model.MangaStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import static org.assertj.core.api.Assertions.assertThat;
 
