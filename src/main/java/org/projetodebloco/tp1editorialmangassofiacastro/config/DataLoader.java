@@ -114,7 +114,10 @@ public class DataLoader {
     }
     private void criarAvaliacao(Long mangaId, int nota) {
         try {
-            avaliacaoClient.criarAvaliacao(mangaId, nota);
+            Map<String, Object> body = new java.util.HashMap<>();
+            body.put("mangaId", mangaId);
+            body.put("nota", nota);
+            avaliacaoClient.criarAvaliacao(body);
         } catch (Exception e) {
             System.out.println("avaliacao-service indisponível /// avaliação não criada para mangaId: " + mangaId);
         }

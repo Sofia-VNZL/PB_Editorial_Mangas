@@ -1,57 +1,29 @@
 package org.projetodebloco.tp1editorialmangassofiacastro.client;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
 
-@Component
-public class AvaliacaoClient {
+@FeignClient(name = "avaliacao-service", url = "${avaliacao.service.url}")
+public interface AvaliacaoClient {
 
-    private final RestTemplate restTemplate;
-    private final String avaliacaoServiceUrl;
+    @GetMapping("/api/avaliacoes/media")
+    Map<String, Object> buscarMedia(@RequestParam("mangaId") Long mangaId);
 
-    public AvaliacaoClient(@Value("${avaliacao.service.url}") String avaliacaoServiceUrl) {
-        this.restTemplate = new RestTemplate();
-        this.avaliacaoServiceUrl = avaliacaoServiceUrl;
-    }
+    @GetMapping("/api/avaliacoes")
+    List<Map<String, Object>> buscarAvaliacoes(@RequestParam("mangaId") Long mangaId);
 
-    public Map buscarMedia(Long mangaId) {
-        try {
-            return restTemplate.getForObject(
-                    avaliacaoServiceUrl + "/api/avaliacoes/media?mangaId=" + mangaId,
-                    Map.class
-            );
-        } catch (Exception e) {
-            return Map.of("mangaId", mangaId, "media", 0.0, "totalAvaliacoes", 0);
-        }
-    }
-
-    public Object buscarAvaliacoes(Long mangaId) {
-        try {
-            return restTemplate.getForObject(
-                    avaliacaoServiceUrl + "/api/avaliacoes?mangaId=" + mangaId,
-                    Object.class
-            );
-        } catch (Exception e) {
-            return List.of();
-        }
-    }
-
-    public void criarAvaliacao(Long mangaId, int nota) { //lembrar de usar no mock inicial!!!!!!!!!!!!
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        String body = "{\"mangaId\":" + mangaId + ",\"nota\":" + nota + "}";
-        HttpEntity<String> request = new HttpEntity<>(body, headers);
-        restTemplate.postForObject(
-                avaliacaoServiceUrl + "/api/avaliacoes",
-                request,
-                Object.class
-        );
-    }
+    @PostMapping("/api/avaliacoes")
+    Map<String, Object> criarAvaliacao(@RequestBody Map<String, Object> body);
 }
