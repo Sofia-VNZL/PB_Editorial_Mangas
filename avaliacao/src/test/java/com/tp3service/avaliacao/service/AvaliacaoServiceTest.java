@@ -9,19 +9,26 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
+
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-
 public class AvaliacaoServiceTest {
+
     @Mock
     private AvaliacaoRepository avaliacaoRepository;
+
+    @Mock
+    private RabbitTemplate rabbitTemplate;
 
     @InjectMocks
     private AvaliacaoService avaliacaoService;
@@ -42,7 +49,7 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar exceção quando avaliação não encontrada ")
+    @DisplayName("Deve lançar exceção quando avaliação não encontrada")
     void deveLancarExcecaoQuandoNaoEncontrada() {
         when(avaliacaoRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -52,7 +59,7 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve calcular média corretamente" )
+    @DisplayName("Deve calcular média corretamente")
     void deveCalcularMedia() {
         when(avaliacaoRepository.calcularMediaPorMangaId(1L))
                 .thenReturn(Optional.of(4.5));
@@ -63,7 +70,7 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve retornar zero quando não há avaliações" )
+    @DisplayName("Deve retornar zero quando não há avaliações")
     void deveRetornarZeroSemAvaliacoes() {
         when(avaliacaoRepository.calcularMediaPorMangaId(99L))
                 .thenReturn(Optional.empty());
@@ -74,25 +81,31 @@ public class AvaliacaoServiceTest {
     }
 
     @Test
-    @DisplayName("Deve criar avaliação")
+    @DisplayName("deve criar avaliação e publicar evento")
     void deveCriarAvaliacao() {
+        ReflectionTestUtils.setField(avaliacaoService, "exchange", "avaliacao.exchange");
+        ReflectionTestUtils.setField(avaliacaoService, "routingKey", "avaliacao.criada");
+
         Avaliacao avaliacao = Avaliacao.builder().mangaId(1L).nota(5).build();
         Avaliacao salva = Avaliacao.builder().id(1L).mangaId(1L).nota(5).build();
         when(avaliacaoRepository.save(avaliacao)).thenReturn(salva);
+        doNothing().when(rabbitTemplate).convertAndSend(anyString(), anyString(), any(Object.class));
 
         Avaliacao resultado = avaliacaoService.criar(avaliacao);
 
         assertThat(resultado.getId()).isEqualTo(1L);
         verify(avaliacaoRepository, times(1)).save(avaliacao);
+        verify(rabbitTemplate, times(1)).convertAndSend(anyString(), anyString(), any(Object.class));
     }
 
     @Test
-    @DisplayName("Deve deletar avaliação existente!!!")
+    @DisplayName("deve deletar avaliação existente ")
     void deveDeletarAvaliacao() {
         Avaliacao avaliacao = Avaliacao.builder().id(1L).mangaId(1L).nota(5).build();
         when(avaliacaoRepository.findById(1L)).thenReturn(Optional.of(avaliacao));
 
         avaliacaoService.deletar(1L);
+
         verify(avaliacaoRepository, times(1)).deleteById(1L);
     }
 }
