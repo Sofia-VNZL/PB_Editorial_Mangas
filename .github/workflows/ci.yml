@@ -1,0 +1,53 @@
+name: CI — Editorial de Mangás
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build-editorial-service:
+    name: Build e Testes — editorial-service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compilar e testar editorial-service
+        run: mvn clean verify -DskipTests=false
+        working-directory: .
+
+      - name: Build Docker image — editorial-service
+        run: docker build -t editorial-service:latest .
+
+  build-avaliacao-service:
+    name: Build e Testes — avaliacao-service
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+
+      - name: Configurar Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Compilar e testar avaliacao-service
+        run: mvn clean verify -DskipTests=false
+        working-directory: ./avaliacao
+
+      - name: Build Docker image — avaliacao-service
+        run: docker build -t avaliacao-service:latest ./avaliacao

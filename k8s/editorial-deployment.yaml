@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: editorial-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: editorial-service
+  template:
+    metadata:
+      labels:
+        app: editorial-service
+    spec:
+      containers:
+        - name: editorial-service
+          image: editorial-service:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_RABBITMQ_HOST
+              value: rabbitmq
+            - name: SPRING_RABBITMQ_PORT
+              value: "5672"
+            - name: SPRING_RABBITMQ_USERNAME
+              value: guest
+            - name: SPRING_RABBITMQ_PASSWORD
+              value: guest
+            - name: AVALIACAO_SERVICE_URL
+              value: http://avaliacao-service:8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: editorial-service
+spec:
+  selector:
+    app: editorial-service
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30080
